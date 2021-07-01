@@ -4,6 +4,7 @@
  * UC2-Ability for player to choose X or O.
  * UC3-Write a method show board to display board.
  * UC4-Ability for player to move on desired place on board.
+ * UC5-Ability to check for free space before making desired move.
  * 
  * @author Pratik Chaudhari
  * @since 27/06/2021
@@ -96,7 +97,7 @@ public class TicTacToe {
 		}
 	}
 
-	// UC4
+	// UC4 and UC5
 	public static int isIndexEmpty(char[] board1, Scanner input) {
 
 		int index = 0;
