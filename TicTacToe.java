@@ -5,6 +5,7 @@
  * UC3-Write a method show board to display board.
  * UC4-Ability for player to move on desired place on board.
  * UC5-Ability to check for free space before making desired move.
+ * UC6-Toss to decide who plays first.
  * 
  * @author Pratik Chaudhari
  * @since 27/06/2021
@@ -20,17 +21,10 @@ public class TicTacToe {
 		// Various Variables used in main()
 		Scanner input = new Scanner(System.in);
 		char[] board = createBoard();
-
-		char playerSymbol = playerChooseSymbol(input);
-		char computerSymbol = '-';
-		if (playerSymbol == 'X') {
-			computerSymbol = 'O';
-		} else {
-			computerSymbol = 'X';
-		}
+		char playerSymbol = playerChooseSymbol(input), opponentSymbol = (playerSymbol == 'X') ? 'O' : 'X';
+		boolean playerPlaysFirst = toss(input);
 
 		showBoard(board);
-
 		do {
 			System.out.println("Player please make your move.");
 			makeMove(board, input, playerSymbol);
@@ -115,4 +109,26 @@ public class TicTacToe {
 		}
 		return index;
 	}
+
+	// UC6
+	public static boolean toss(Scanner sc) {
+
+		System.out.println("Type [H] or [T] for coin toss.");
+		char playerTossCall = sc.next().toUpperCase().charAt(0);
+
+		if (playerTossCall != 'H' && playerTossCall != 'T')
+			toss(sc);
+		else
+			System.out.println("A coin was tossed");
+
+		boolean playerWonOrNot = ((int) (Math.random() * 10) % 2 == 0) ? true : false;
+		if (playerWonOrNot)
+			System.out.printf("Coin turned up [%s]. You Won. You will play first.\n", playerTossCall);
+		else
+			System.out.printf("Coin turned up [%s]. You lost. Your opponent will play first.\n",
+					(playerTossCall == 'H') ? 'T' : 'H');
+
+		return playerWonOrNot;
+	}
+
 }
