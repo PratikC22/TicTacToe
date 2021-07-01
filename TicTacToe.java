@@ -3,6 +3,7 @@
  * UC1-As player would like to start fresh, create a new board.
  * UC2-Ability for player to choose X or O.
  * UC3-Write a method show board to display board.
+ * UC4-Ability for player to move on desired place on board.
  * 
  * @author Pratik Chaudhari
  * @since 27/06/2021
@@ -18,26 +19,22 @@ public class TicTacToe {
 		// Various Variables used in main()
 		Scanner input = new Scanner(System.in);
 		char[] board = createBoard();
-		boolean endGameFlag = false;
-		char choiceYesOrNo = '-';
 
 		char playerSymbol = playerChooseSymbol(input);
 		char computerSymbol = '-';
-		if (playerSymbol == 'X' || playerSymbol == 'x') {
+		if (playerSymbol == 'X') {
 			computerSymbol = 'O';
 		} else {
 			computerSymbol = 'X';
 		}
 
+		showBoard(board);
+
 		do {
+			System.out.println("Player please make your move.");
+			makeMove(board, input, playerSymbol);
 
-			showBoard(board);
-
-			System.out.println("Do you want to end the Game? Enter [Y] / [N].");
-			choiceYesOrNo = input.next().toUpperCase().charAt(0);
-			endGameFlag = (choiceYesOrNo == 'Y') ? false : true;
-
-		} while (endGameFlag);
+		} while (true);
 
 	}
 
@@ -74,14 +71,47 @@ public class TicTacToe {
 	// UC3
 	public static void showBoard(char[] board1) {
 
-		System.out.println("-------");
+		System.out.println("-------         Position Map-");
 		for (int i = 1; i < 10; i++) {
 			System.out.printf("|" + board1[i]);
 			if (i % 3 == 0) {
-				System.out.printf("|\n");
+				System.out.printf("|         [%d][%d][%d]\n", i - 2, i - 1, i);
 			}
 		}
 		System.out.println("-------");
 	}
 
+	// UC4
+	public static void makeMove(char[] board2, Scanner Input, char playerChar) {
+
+		int slotStatus = isIndexEmpty(board2, Input);
+
+		if (slotStatus != 0) {
+			board2[slotStatus] = playerChar;
+			showBoard(board2);
+		} else {
+			System.out.printf("\n\n !!! The position you selected is already filled !!! \n"
+					+ "!!! Please select empty position !!!\n\n");
+			makeMove(board2, Input, playerChar);
+		}
+	}
+
+	// UC4
+	public static int isIndexEmpty(char[] board1, Scanner input) {
+
+		int index = 0;
+
+		while (true) {
+			System.out.println("Please enter a position between 1 to 9.");
+			index = input.nextInt();
+			if (index > 0 && index < 10) {
+				break;
+			}
+
+		}
+		if (board1[index] == 'X' || board1[index] == 'O') {
+			return 0;
+		}
+		return index;
+	}
 }
